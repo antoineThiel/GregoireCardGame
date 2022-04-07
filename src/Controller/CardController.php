@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Card;
 use App\Form\CardType;
 use App\Repository\CardRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,10 @@ class CardController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_card_new', methods: ['GET', 'POST'])]
+    /**
+     * @Route("/new", name="app_card_new")
+     * @Method({"GET", "POST"})
+     */
     public function new(Request $request, CardRepository $cardRepository): Response
     {
         $card = new Card();

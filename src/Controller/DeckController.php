@@ -17,7 +17,7 @@ class DeckController extends AbstractController
     public function index(DeckRepository $deckRepository): Response
     {
         return $this->render('deck/index.html.twig', [
-            'decks' => $deckRepository->findAll(),
+            'decks' => $deckRepository->findBy(["isPool" => false, "isCemetery" => false]),
         ]);
     }
 

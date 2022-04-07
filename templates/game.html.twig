@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <a href="{{ path('reset') }}" class="btn btn-danger">Reset</a>
+
+    {% if drawn_card is defined and drawn_card is not null %}
+    <div class="container" style="width: 150px">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ drawn_card.title}}</h5>
+                <p class="card-text">{{ drawn_card.text}}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container" style="text-align: center">
+        {% for deck in decks %}
+            <div class="row">
+                <div class="col">
+                    {% if deck.pool.card.count == 0 %}
+                        <p>Votre main est vide</p>
+                    {% else %}
+                        <a href="{{ path('draw', {'deck' : deck.id}) }}" style="width: 100px; margin-top: 10px"  class="btn btn-info">Tirer carte</a>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-title">{{ deck.title}}</h5>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Pool</h5>
+                            {% for card in deck.pool.card %}
+                                <p style="border: 1px solid" class="card-text">{{ card.title}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Cemetery</h5>
+                            {% for card in deck.cemetery.card %}
+                                <p style="border: 1px solid" class="card-text">{{ card.title}}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
