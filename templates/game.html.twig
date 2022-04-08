@@ -19,7 +19,7 @@
         {% for deck in decks %}
             <div class="row">
                 <div class="col">
-                    {% if deck.pool.card.count == 0 %}
+                    {% if deck.pool.cardsInPool.count == 0 %}
                         <p>Votre main est vide</p>
                     {% else %}
                         <a href="{{ path('draw', {'deck' : deck.id}) }}" style="width: 100px; margin-top: 10px"  class="btn btn-info">Tirer carte</a>
@@ -28,13 +28,14 @@
                 <div class="col">
                     <div class="card">
                         <h5 class="card-title">{{ deck.title}}</h5>
+                        <p class="card-text">{{ deck.pool.cardsInPool|length }}/{{ deck.cards|length }}</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Pool</h5>
-                            {% for card in deck.pool.card %}
+                            {% for card in deck.pool.cardsInPool %}
                                 <p style="border: 1px solid" class="card-text">{{ card.title}}</p>
                             {% endfor %}
                         </div>
@@ -44,7 +45,7 @@
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Cemetery</h5>
-                            {% for card in deck.cemetery.card %}
+                            {% for card in deck.cemetery.cardsInCemetery %}
                                 <p style="border: 1px solid" class="card-text">{{ card.title}}</p>
                             {% endfor %}
                         </div>

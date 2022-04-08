@@ -15,11 +15,6 @@ class DeckType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('card', EntityType::class, [
-                'class' => Card::class,
-                'multiple' => true,
-                'expanded' => true,
-            ])
         ;
     }
 

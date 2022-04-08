@@ -21,12 +21,25 @@ class Card
     #[ORM\Column(type: 'text')]
     private $text;
 
-    #[ORM\ManyToMany(targetEntity: Deck::class, mappedBy: 'card')]
-    private $decks;
+    #[ORM\ManyToOne(targetEntity: Deck::class, inversedBy: 'cards')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $deck;
+
+    #[ORM\ManyToOne(targetEntity: Pool::class, inversedBy: 'cards')]
+    private $pool;
+
+    #[ORM\ManyToOne(targetEntity: Cemetery::class, inversedBy: 'cards')]
+    private $cemetery;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $inPool;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $inCemetery;
 
     public function __construct()
     {
-        $this->decks = new ArrayCollection();
+        //$this->decks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,36 +71,69 @@ class Card
         return $this;
     }
 
-    /**
-     * @return Collection<int, Deck>
-     */
-    public function getDecks(): Collection
-    {
-        return $this->decks;
-    }
-
-    public function addDeck(Deck $deck): self
-    {
-        if (!$this->decks->contains($deck)) {
-            $this->decks[] = $deck;
-            $deck->addCard($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDeck(Deck $deck): self
-    {
-        if ($this->decks->removeElement($deck)) {
-            $deck->removeCard($this);
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->title;
+    }
+
+    public function getDeck(): ?Deck
+    {
+        return $this->deck;
+    }
+
+    public function setDeck(?Deck $deck): self
+    {
+        $this->deck = $deck;
+
+        return $this;
+    }
+
+    public function getPool(): ?Pool
+    {
+        return $this->pool;
+    }
+
+    public function setPool(?Pool $pool): self
+    {
+        $this->pool = $pool;
+
+        return $this;
+    }
+
+    public function getCemetery(): ?Cemetery
+    {
+        return $this->cemetery;
+    }
+
+    public function setCemetery(?Cemetery $cemetery): self
+    {
+        $this->cemetery = $cemetery;
+
+        return $this;
+    }
+
+    public function getInPool(): ?bool
+    {
+        return $this->inPool;
+    }
+
+    public function setInPool(?bool $inPool): self
+    {
+        $this->inPool = $inPool;
+
+        return $this;
+    }
+
+    public function getInCemetery(): ?bool
+    {
+        return $this->inCemetery;
+    }
+
+    public function setInCemetery(?bool $inCemetery): self
+    {
+        $this->inCemetery = $inCemetery;
+
+        return $this;
     }
 
 

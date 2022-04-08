@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Deck;
+use App\Repository\CardRepository;
 use App\Repository\DeckRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -24,22 +25,7 @@ class DefaultController extends AbstractController
      * @Route("/newGame", name="newgame")
      */
     public function newGame(DeckRepository $deckRepository, EntityManagerInterface $entityManager){
-        $decks = $deckRepository->findBy(["isPool" => false, "isCemetery" => false]);
-        foreach ($decks as $deck){
-            if ($deck->getCemetery() == null and $deck->getPool() == null) {
-                $currentPool = new Deck();
-                $currentPool->setIsPool(true);
-                $currentPool->setTitle("Current pool");
-                $currentPool->setCards($deck->getCard());
-                $cemetery = new Deck();
-                $cemetery->setTitle("Cemetery");
-                $cemetery->setIsCemetery(true);
-                $deck->setPool($currentPool);
-                $deck->setCemetery($cemetery);
-                $entityManager->persist($deck);
-            }
-        }
-        $entityManager->flush();
+        $decks = $deckRepository->findAll();
         return $this->render('game.html.twig', [
             "decks" => $decks
         ]);
@@ -49,7 +35,7 @@ class DefaultController extends AbstractController
      * @Route("/game", name="game")
      */
     public function game(DeckRepository $deckRepository, EntityManagerInterface $entityManager){
-        $decks = $deckRepository->findBy(["isCemetery" => false, "isPool" => false]);
+        $decks = $deckRepository->findAll();
         return $this->render('game.html.twig', [
             "decks" => $decks
         ]);
@@ -60,20 +46,20 @@ class DefaultController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function drawCard(Request $request, DeckRepository $deckRepository , EntityManagerInterface $entityManager,Deck $deck)
+    public function drawCard(Request $request, DeckRepository $deckRepository , EntityManagerInterface $entityManager, Deck $deck)
     {
-        $decks = $deckRepository->findBy(["isCemetery" => false, "isPool" => false]);
-        $maxRandom = count($deck->getPool()->getCard()) - 1;
+        $decks = $deckRepository->findAll();
+        $maxRandom = count($deck->getPool()->getCardsInPool()) - 1;
         if ($maxRandom < 0) {
             return $this->render('game.html.twig', [
                 "decks" => $decks,
             ]);
         }
         $cardNbre = rand(0, $maxRandom);
-        $card = $deck->getPool()->getCard()[$cardNbre];
-        $deck->getPool()->removeCard($card);
-        $deck->getCemetery()->addCard($card);
-        $entityManager->persist($deck);
+        $card = $deck->getPool()->getCardsInPool()[$cardNbre];
+        $card->setInPool(false);
+        $card->setInCemetery(true);
+        $entityManager->persist($card);
         $entityManager->flush();
         return $this->render('game.html.twig', [
             "decks" => $decks,
@@ -91,23 +77,17 @@ class DefaultController extends AbstractController
     /**
      * @Route("/reset", name="reset")
      */
-    public function reset(DeckRepository $deckRepository, EntityManagerInterface $entityManager)
+    public function reset(CardRepository $cardRepository, EntityManagerInterface $entityManager)
     {
-        $decks = $deckRepository->findBy(["isPool" => false, "isCemetery" => false]);
-        foreach ($decks as $deck){
-            $cemetery = $deck->getCemetery();
-            $pool = $deck->getPool();
-            if ($cemetery) {
-                $deck->setCemetery(null);
-                $entityManager->remove($cemetery);
-            }
-            if ($pool) {
-                $deck->setPool(null);
-                $entityManager->remove($pool);
-            }
+        $cards = $cardRepository->findAll();
+        foreach ($cards as $card)
+        {
+            $card->setInCemetery(false);
+            $card->setInPool(true);
+            $entityManager->persist($card);
         }
         $entityManager->flush();
-        return $this->render('homepage.html.twig', []);
+        return $this->redirectToRoute("newgame");
     }
 
 

@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Card;
+use App\Entity\Deck;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +17,11 @@ class CardType extends AbstractType
         $builder
             ->add('title')
             ->add('text')
+            ->add('deck', EntityType::class, [
+                "class" => Deck::class,
+                'multiple' => false,
+                'expanded' => false,
+            ])
         ;
     }
 

@@ -33,6 +33,10 @@ class CardController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $card->setPool($form->get('deck')->getData()->getPool());
+            $card->setCemetery($form->get('deck')->getData()->getCemetery());
+            $card->setInPool(true);
+            $card->setInCemetery(false);
             $cardRepository->add($card);
             return $this->redirectToRoute('app_card_index', [], Response::HTTP_SEE_OTHER);
         }

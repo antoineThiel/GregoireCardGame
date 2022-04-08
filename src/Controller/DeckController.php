@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Cemetery;
 use App\Entity\Deck;
+use App\Entity\Pool;
 use App\Form\DeckType;
 use App\Repository\DeckRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,12 +20,12 @@ class DeckController extends AbstractController
     public function index(DeckRepository $deckRepository): Response
     {
         return $this->render('deck/index.html.twig', [
-            'decks' => $deckRepository->findBy(["isPool" => false, "isCemetery" => false]),
+            'decks' => $deckRepository->findAll()
         ]);
     }
 
     #[Route('/new', name: 'app_deck_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DeckRepository $deckRepository): Response
+    public function new(Request $request, DeckRepository $deckRepository, EntityManagerInterface $entityManager): Response
     {
         $deck = new Deck();
         $form = $this->createForm(DeckType::class, $deck);
@@ -30,6 +33,15 @@ class DeckController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $deckRepository->add($deck);
+            $cemetery = new Cemetery();
+            $cemetery->setDeck($deck);
+            $deck->setCemetery($cemetery);
+            $pool = new Pool();
+            $pool->setDeck($deck);
+            $deck->setPool($pool);
+            $entityManager->persist($cemetery);
+            $entityManager->persist($pool);
+            $entityManager->flush();
             return $this->redirectToRoute('app_deck_index', [], Response::HTTP_SEE_OTHER);
         }
 
