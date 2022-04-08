@@ -2,6 +2,26 @@
 
 
 {% block body %}
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 20px 16px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
     <a href="{{ path('reset') }}" class="btn btn-danger">Reset</a>
 
     {% if drawn_card is defined and drawn_card is not null %}
@@ -32,28 +52,36 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">Pool</h5>
-                            {% for card in deck.pool.cardsInPool %}
-                                <p style="border: 1px solid" class="card-text">{{ card.title}}</p>
-                            {% endfor %}
+                    <div class="row">
+                        <div class="dropdown">
+                            <div class="card" style="width: 18rem;">
+                                <span>Pool</span>
+                                <div class="dropdown-content">
+                                    {% for card in deck.pool.cardsInPool %}
+                                        <p style="border: 1px solid">{{ card.title}}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">Cemetery</h5>
-                            {% for card in deck.cemetery.cardsInCemetery %}
-                                <p style="border: 1px solid" class="card-text">{{ card.title}}</p>
-                            {% endfor %}
+                    <div class="row">
+                        <div class="dropdown">
+                            <div class="card" style="width: 18rem;">
+                                <span>Cemetery</span>
+                                <div class="dropdown-content">
+                                    {% for card in deck.cemetery.cardsInCemetery %}
+                                        <p style="border: 1px solid">{{ card.title}}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+
 {% endblock %}
 
 
