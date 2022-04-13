@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\ColorEnum;
 use App\Repository\CardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,6 +37,9 @@ class Card
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $inCemetery;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $color;
 
     public function __construct()
     {
@@ -133,6 +137,22 @@ class Card
     {
         $this->inCemetery = $inCemetery;
 
+        return $this;
+    }
+
+    public function getColor(): ?int
+    {
+        return $this->color;
+    }
+
+    public function getColorName()
+    {
+        return ColorEnum::getColorName($this->color);
+    }
+
+    public function setColor(?int $color): self
+    {
+        $this->color = $color;
         return $this;
     }
 

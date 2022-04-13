@@ -12,8 +12,12 @@ import './styles/app.css';
 import './bootstrap';
 import $ from 'jquery';
 
+$("#test-newlist").css('display', 'none')
 
-
-$('#draw').click(function() {
-    console.log($(this))
+$('#displayNewList').click(function() {
+    if ($("#test-newlist").css('display') == 'none'){
+        $("#test-newlist").css('display', '')
+    }else {
+        $("#test-newlist").css('display', 'none')
+    }
 })

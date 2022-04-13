@@ -8,27 +8,23 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ deck.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
+                <th>Titre</th>
                 <td>{{ deck.title }}</td>
             </tr>
             <tr>
-                <th>Cards</th>
+                <th>Cartes</th>
                 <td>
                 {% for card in deck.cards %}
-                    <p>Carte numéro : {{ card.id }} - {{ card.title }}</p>
+                    <p>Carte : {{ card.title }}</p>
                 {% endfor %}
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_deck_index') }}">back to list</a>
+    <a href="{{ path('app_deck_index') }}">Retour a la liste</a>
 
-    <a href="{{ path('app_deck_edit', {'id': deck.id}) }}">edit</a>
+    <a href="{{ path('app_deck_edit', {'id': deck.id}) }}">Modifier</a>
 
     {{ include('deck/_delete_form.html.twig') }}
 {% endblock %}

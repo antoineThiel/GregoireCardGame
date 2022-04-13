@@ -1,4 +1,13 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.title) }}
+    {{ form_row(form.deck) }}
+    {{ form_row(form.color) }}
+    {{ form_row(form.text) }}
+    {{ form_rest(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+    <a class="btn btn-primary" href="{{ path('app_card_index') }}">Retour à la liste</a>
+
+    {% if app.request.attributes.get('_route') == "app_card_edit" %}
+        {{ include('card/_delete_form.html.twig') }}
+    {% endif %}
 {{ form_end(form) }}

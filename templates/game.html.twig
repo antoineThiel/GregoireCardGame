@@ -22,18 +22,33 @@
             display: block;
         }
     </style>
+    <br><br>
     <a href="{{ path('reset') }}" class="btn btn-danger">Reset</a>
 
+
+    <div class="container" style="width: 150px; height: 18rem">
     {% if drawn_card is defined and drawn_card is not null %}
-    <div class="container" style="width: 150px">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">{{ drawn_card.title}}</h5>
-                <p class="card-text">{{ drawn_card.text}}</p>
+        <div class="card" style="width: 18rem; height: 15rem">
+            <div class="card-body" style="
+                    text-align: center;
+            {% if drawn_card.color is null %}
+                    background-color: white;
+            {% elseif drawn_card.color == 0 %}
+                    background-color: yellow;
+            {% elseif drawn_card.color == 1 %}
+                    background-color: indianred;
+            {% else %}
+                    background-color: darkgreen;
+            {% endif %}
+                    ">
+                <div style="border-bottom: 2px black solid; text-align: center; margin-bottom: 10px">
+                    <h5 class="card-title">{{ drawn_card.title}}</h5>
+                </div>
+                    <p class="card-text">{{ drawn_card.text}}</p>
             </div>
         </div>
-    </div>
     {% endif %}
+    </div>
 
     <div class="container" style="text-align: center">
         {% for deck in decks %}
@@ -58,7 +73,17 @@
                                 <span>Pool</span>
                                 <div class="dropdown-content">
                                     {% for card in deck.pool.cardsInPool %}
-                                        <p style="border: 1px solid">{{ card.title}}</p>
+                                        <p style="border: 1px solid;
+                                        {% if card.color is null %}
+                                                background-color: white;
+                                        {% elseif card.color == 0 %}
+                                                background-color: yellow;
+                                        {% elseif card.color == 1 %}
+                                                background-color: indianred;
+                                        {% else %}
+                                                background-color: darkgreen;
+                                        {% endif %}">
+                                            {{ card.title}}</p>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -70,7 +95,17 @@
                                 <span>Cemetery</span>
                                 <div class="dropdown-content">
                                     {% for card in deck.cemetery.cardsInCemetery %}
-                                        <p style="border: 1px solid">{{ card.title}}</p>
+                                        <p style="border: 1px solid;
+                                        {% if card.color is null %}
+                                                background-color: white;
+                                        {% elseif card.color == 0 %}
+                                                background-color: yellow;
+                                        {% elseif card.color == 1 %}
+                                                background-color: indianred;
+                                        {% else %}
+                                                background-color: darkgreen;
+                                        {% endif %}">
+                                            {{ card.title}}</p>
                                     {% endfor %}
                                 </div>
                             </div>

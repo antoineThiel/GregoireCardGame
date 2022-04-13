@@ -1,28 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Card index{% endblock %}
+{% block title %}Liste Cartes{% endblock %}
 
 {% block body %}
-    <h1>Card index</h1>
+    <h1>Liste Cartes</h1>
+    <a class="btn btn-success" href="{{ path('app_card_new') }}">Nouvelle carte</a>
 
+    <button class="btn btn-warning" id="displayNewList">Test - dis moi si ca te convient comme listing ou si tu prefere la liste -->CLICK<--</button>
+    <br><br>
+
+    <div class="container" id="test-newlist">
+        <div class="row">
+            {% for card in cards %}
+                <div class="col">
+                    <div class="card" style="width: 18rem; height: 15rem; margin-bottom: 15px">
+                        <div class="card-body" style="
+                                text-align: center;
+                        {% if card.color is null %}
+                                background-color: white;
+                        {% elseif card.color == 0 %}
+                                background-color: yellow;
+                        {% elseif card.color == 1 %}
+                                background-color: indianred;
+                        {% elseif card.color == 2 %}
+                                background-color: darkgreen;
+                        {% else %}
+                            background-color: white;
+                        {% endif %}
+                                ">
+                            <div style="border-bottom: 2px black solid; text-align: center; margin-bottom: 10px">
+                                <h5 class="card-title">{{ card.title}}</h5>
+                            </div>
+                            <p class="card-text">{{ card.text}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Title</th>
                 <th>Text</th>
+                <th>Color</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for card in cards %}
             <tr>
-                <td>{{ card.id }}</td>
                 <td>{{ card.title }}</td>
                 <td>{{ card.text }}</td>
+                <td>{{ card.colorName }}</td>
                 <td>
-                    <a href="{{ path('app_card_show', {'id': card.id}) }}">show</a>
-                    <a href="{{ path('app_card_edit', {'id': card.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_card_show', {'id': card.id}) }}">Voir</a>
+                    <a class="btn btn-warning" href="{{ path('app_card_edit', {'id': card.id}) }}">Modifier</a>
+                    {{ include('card/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -33,5 +67,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_card_new') }}">Create new</a>
 {% endblock %}

@@ -1,26 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Deck index{% endblock %}
+{% block title %}Liste Deck{% endblock %}
 
 {% block body %}
-    <h1>Deck index</h1>
-
+    <h1>Liste Deck</h1>
+    <br>
+    <a class="btn btn-success" href="{{ path('app_deck_new') }}">Nouveau deck</a>
+    <br>
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
+                <th>Titre</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for deck in decks %}
             <tr>
-                <td>{{ deck.id }}</td>
                 <td>{{ deck.title }}</td>
                 <td>
-                    <a href="{{ path('app_deck_show', {'id': deck.id}) }}">show</a>
-                    <a href="{{ path('app_deck_edit', {'id': deck.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_deck_show', {'id': deck.id}) }}">Voir</a>
+                    <a class="btn btn-warning" href="{{ path('app_deck_edit', {'id': deck.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -30,6 +30,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_deck_new') }}">Create new</a>
 {% endblock %}
