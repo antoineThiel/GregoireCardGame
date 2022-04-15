@@ -84,6 +84,11 @@ class DefaultController extends AbstractController
         {
             $card->setInCemetery(false);
             $card->setInPool(true);
+            $deck = $card->getDeck();
+            $pool = $deck->getPool();
+            $cemetery = $deck->getCemetery();
+            $card->setPool($pool);
+            $card->setCemetery($cemetery);
             $entityManager->persist($card);
         }
         $entityManager->flush();

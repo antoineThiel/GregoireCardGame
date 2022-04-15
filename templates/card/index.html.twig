@@ -43,6 +43,7 @@
             <tr>
                 <th>Title</th>
                 <th>Text</th>
+                <th>Deck</th>
                 <th>Color</th>
                 <th>actions</th>
             </tr>
@@ -52,6 +53,7 @@
             <tr>
                 <td>{{ card.title }}</td>
                 <td>{{ card.text }}</td>
+                <td>{{ card.deck }}</td>
                 <td>{{ card.colorName }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_card_show', {'id': card.id}) }}">Voir</a>
